@@ -12,23 +12,23 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ viewMode, setViewMode, onLogout, profile }) => {
   const navItems: { mode: ViewMode; icon: string; label: string }[] = [
     { mode: 'dashboard', icon: 'fa-house', label: 'Home' },
-    { mode: 'profile', icon: 'fa-user-graduate', label: 'My Academic Bio' },
-    { mode: 'syllabus', icon: 'fa-book-open', label: 'Syllabus & Notes' },
+    { mode: 'profile', icon: 'fa-user-graduate', label: 'Academic Bio' },
+    { mode: 'syllabus', icon: 'fa-book-open', label: 'Syllabus Hub' },
     { mode: 'timetable', icon: 'fa-calendar-days', label: 'My Schedule' },
-    { mode: 'calendar', icon: 'fa-calendar-check', label: 'Academic Calendar' },
-    { mode: 'results', icon: 'fa-chart-column', label: 'Academic Results' },
+    { mode: 'calendar', icon: 'fa-calendar-check', label: 'Uni Calendar' },
+    { mode: 'results', icon: 'fa-chart-column', label: 'Exam Results' },
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 flex flex-col text-slate-300 shadow-2xl z-20">
+    <aside className="sidebar">
       <div className="p-6">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white shadow-xl shadow-red-900/40 transform -rotate-3 group-hover:rotate-0 transition-transform duration-300">
+          <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white shadow-lg transform -rotate-3">
             <i className="fas fa-graduation-cap text-lg"></i>
           </div>
           <div>
-            <h2 className="font-black text-white text-base tracking-tighter leading-none mb-1">{profile.name}</h2>
-            <p className="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Student Portal</p>
+            <h2 className="font-black text-white text-sm tracking-tighter leading-none mb-1 uppercase">{profile.name.split(' ')[0]}</h2>
+            <p className="text-[8px] uppercase tracking-widest text-slate-500 font-bold">Postgrad Portal</p>
           </div>
         </div>
 
@@ -37,47 +37,38 @@ const Sidebar: React.FC<SidebarProps> = ({ viewMode, setViewMode, onLogout, prof
             <button
               key={item.mode}
               onClick={() => setViewMode(item.mode)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                viewMode === item.mode 
-                ? 'bg-red-600 text-white shadow-lg shadow-red-900/20' 
-                : 'hover:bg-slate-800 hover:text-white'
-              }`}
+              className={`nav-link ${viewMode === item.mode ? 'active' : ''}`}
             >
-              <i className={`fas ${item.icon} w-5 text-sm ${viewMode === item.mode ? 'text-white' : 'text-slate-500'}`}></i>
-              <span className={`text-sm ${viewMode === item.mode ? 'font-black' : 'font-medium'}`}>{item.label}</span>
+              <i className={`fas ${item.icon} w-5 text-sm`}></i>
+              <span className="uppercase tracking-tight">{item.label}</span>
             </button>
           ))}
         </nav>
       </div>
 
       <div className="mt-auto p-6 space-y-4">
-        <div className="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/50">
+        <div className="bg-slate-800/40 rounded-2xl p-4 border border-slate-700/50">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-700">
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700">
                {profile.photo ? (
                  <img src={profile.photo} className="w-full h-full object-cover" alt="Avatar" />
                ) : (
-                 <div className="w-full h-full bg-slate-700 flex items-center justify-center text-[10px]">{profile.avatar}</div>
+                 <div className="w-full h-full bg-slate-700 flex items-center justify-center text-[10px] font-black">{profile.avatar}</div>
                )}
             </div>
-            <div>
-              <p className="text-[10px] font-black text-white uppercase tracking-tight truncate w-32">{profile.name}</p>
-              <p className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Active Session</p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400">Current CGPA</span>
-              <span className="text-white font-black tracking-tight">7.33</span>
+            <div className="min-w-0">
+              <p className="text-[9px] font-black text-white uppercase tracking-tight truncate">{profile.name}</p>
+              <p className="text-[7px] font-bold text-slate-500 uppercase tracking-widest">M.Sc Chemistry</p>
             </div>
           </div>
         </div>
+        
         <button 
           onClick={onLogout}
-          className="w-full flex items-center justify-center gap-2 py-3 text-xs font-black text-slate-500 hover:text-red-500 transition-colors bg-slate-800/20 hover:bg-slate-800 rounded-xl"
+          className="w-full py-3 text-[10px] font-black text-slate-500 hover:text-red-500 transition-colors bg-slate-800/20 hover:bg-slate-800 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest"
         >
-          <i className="fas fa-power-off text-[10px]"></i>
-          SIGN OUT
+          <i className="fas fa-power-off"></i>
+          Logout
         </button>
       </div>
     </aside>

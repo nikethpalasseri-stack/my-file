@@ -16,17 +16,15 @@ export type ViewMode = 'dashboard' | 'profile' | 'syllabus' | 'timetable' | 'res
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ViewMode>('dashboard');
-  const [activeSemester, setActiveSemester] = useState<number>(2); // Default to current semester
+  const [activeSemester, setActiveSemester] = useState<number>(2);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   
-  // Manage profile as state to allow dynamic updates (like profile pic)
   const [profile, setProfile] = useState(() => {
     const savedProfile = localStorage.getItem('niketh_profile');
     return savedProfile ? JSON.parse(savedProfile) : USER_PROFILE;
   });
 
-  // Persistence check for login
   useEffect(() => {
     const savedLogin = localStorage.getItem('isLoggedIn');
     if (savedLogin === 'true') {
@@ -84,7 +82,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden animate-in fade-in duration-700">
+    <div className="portal-layout">
       <Sidebar 
         viewMode={viewMode} 
         setViewMode={(mode) => {
@@ -96,26 +94,28 @@ const App: React.FC = () => {
         profile={profile}
       />
 
-      <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 glass-morphism border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-10">
+      <main className="main-content">
+        <header className="portal-header">
           <div className="flex items-center gap-3">
-             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+             <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest">
                {viewMode.replace('-', ' ')}
              </h2>
-             <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
-             <p className="text-xs font-medium text-slate-500 hidden sm:block">{profile.university} | {profile.campus}</p>
+             <div className="w-1 h-1 bg-slate-200 rounded-full"></div>
+             <p className="text-[10px] font-bold text-slate-400 hidden sm:block uppercase tracking-tight">
+               {profile.campus}
+             </p>
           </div>
           
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-bold text-slate-800 tracking-tight">{profile.name}</p>
-              <p className="text-[10px] text-slate-500 font-medium">Reg No: {profile.regNo}</p>
+              <p className="text-[10px] font-black text-slate-800 tracking-tight uppercase">{profile.name}</p>
+              <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">{profile.regNo}</p>
             </div>
-            <div className="w-10 h-10 rounded-full border-2 border-red-600/20 p-0.5 shadow-md shadow-red-200/50">
+            <div className="w-9 h-9 rounded-full border border-slate-200 p-0.5 shadow-sm">
               {profile.photo ? (
                 <img src={profile.photo} alt={profile.name} className="w-full h-full rounded-full object-cover" />
               ) : (
-                <div className="w-full h-full rounded-full bg-red-600 flex items-center justify-center text-white text-xs font-black">
+                <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-[10px] font-black">
                   {profile.avatar}
                 </div>
               )}
@@ -123,8 +123,8 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
-          <div className="max-w-7xl mx-auto p-8 animate-in fade-in duration-500">
+        <div className="content-scroll custom-scroll">
+          <div className="max-w-6xl mx-auto">
             {renderContent()}
           </div>
         </div>
