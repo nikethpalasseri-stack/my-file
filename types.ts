@@ -53,3 +53,17 @@ export interface SemesterTimetable {
   semesterId: number;
   entries: TimetableEntry[];
 }
+
+export interface CalendarEntry {
+  date: number;
+  day: string;
+  status: 'H' | 'W';
+  particulars?: string;
+  cd?: string; // Class Day count for relevant semesters
+}
+
+export interface CalendarMonth {
+  monthName: string;
+  year: number;
+  days: CalendarEntry[];
+}

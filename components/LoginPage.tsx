@@ -38,15 +38,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, profile }) => {
         <div className="bg-white rounded-[3.5rem] p-12 shadow-2xl shadow-slate-300/40 border border-slate-100 text-center">
           <div className="flex flex-col items-center mb-10">
             <div className="relative mb-8">
-                <div className="w-24 h-24 bg-red-600 rounded-[2.2rem] flex items-center justify-center text-white shadow-2xl shadow-red-600/30 overflow-hidden transform -rotate-3 hover:rotate-0 transition-all duration-500 border-4 border-white">
-                  {profile.photo ? (
-                    <img src={profile.photo} alt="Niketh P" className="w-full h-full object-cover" />
-                  ) : (
-                    <i className="fas fa-atom text-3xl"></i>
-                  )}
+                <div className="w-20 h-20 bg-slate-900 rounded-[1.8rem] flex items-center justify-center text-white shadow-2xl shadow-slate-900/30 overflow-hidden transform -rotate-3 hover:rotate-0 transition-all duration-500 border-4 border-white">
+                  <i className="fas fa-graduation-cap text-2xl"></i>
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full border-4 border-white flex items-center justify-center text-white text-[10px]">
-                   <i className="fas fa-shield-halved"></i>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-red-600 rounded-full border-4 border-white flex items-center justify-center text-white text-[9px]">
+                   <i className="fas fa-lock"></i>
                 </div>
             </div>
             <div className="space-y-1">
@@ -55,7 +51,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, profile }) => {
             </div>
             <div className="mt-4 px-4 py-1.5 bg-slate-50 rounded-xl border border-slate-100">
                <p className="text-[9px] font-bold text-slate-500 tracking-widest uppercase">
-                 {profile.school} • {profile.campus}
+                 {profile.school} • Coimbatore
                </p>
             </div>
           </div>
@@ -128,10 +124,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, profile }) => {
         
         <div className="mt-10 flex flex-col items-center gap-2 opacity-40">
            <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em]">
-             Amrita Coimbatore Campus
+             {profile.university}
            </p>
            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
-             Dept of Chemistry • {profile.school}
+             Dept of Chemistry • Coimbatore Campus
            </p>
         </div>
       </div>

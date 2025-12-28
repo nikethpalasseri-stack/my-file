@@ -15,15 +15,16 @@ const Sidebar: React.FC<SidebarProps> = ({ viewMode, setViewMode, onLogout, prof
     { mode: 'profile', icon: 'fa-user-graduate', label: 'My Academic Bio' },
     { mode: 'syllabus', icon: 'fa-book-open', label: 'Syllabus & Notes' },
     { mode: 'timetable', icon: 'fa-calendar-days', label: 'My Schedule' },
-    { mode: 'results', icon: 'fa-chart-column', label: 'Results Hub' },
+    { mode: 'calendar', icon: 'fa-calendar-check', label: 'Academic Calendar' },
+    { mode: 'results', icon: 'fa-chart-column', label: 'Academic Results' },
   ];
 
   return (
     <aside className="w-64 bg-slate-900 flex flex-col text-slate-300 shadow-2xl z-20">
       <div className="p-6">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white shadow-xl shadow-red-900/40 transform -rotate-3">
-            <i className="fas fa-flask-vial text-lg"></i>
+          <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white shadow-xl shadow-red-900/40 transform -rotate-3 group-hover:rotate-0 transition-transform duration-300">
+            <i className="fas fa-graduation-cap text-lg"></i>
           </div>
           <div>
             <h2 className="font-black text-white text-base tracking-tighter leading-none mb-1">{profile.name}</h2>

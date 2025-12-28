@@ -12,9 +12,21 @@ interface DashboardViewProps {
 const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate, profile, results }) => {
   // Calculate CGPA based on published results
   const publishedResults = results.filter(r => r.published);
-  const cgpa = publishedResults.length > 0 
-    ? (publishedResults.reduce((acc, r) => acc + r.sgpa, 0) / publishedResults.length).toFixed(2)
-    : '0.00';
+  const cgpaValue = publishedResults.length > 0 
+    ? (publishedResults.reduce((acc, r) => acc + r.sgpa, 0) / publishedResults.length)
+    : 0;
+  const cgpa = cgpaValue.toFixed(2);
+
+  // Realistic Academic Standing Logic
+  const getAcademicStanding = (val: number) => {
+    if (val >= 9.0) return { label: 'OUTSTANDING', color: 'text-emerald-600 bg-emerald-50 border-emerald-100', icon: 'fa-trophy' };
+    if (val >= 8.0) return { label: 'EXCELLENT', color: 'text-green-600 bg-green-50 border-green-100', icon: 'fa-star' };
+    if (val >= 7.0) return { label: 'VERY GOOD', color: 'text-blue-600 bg-blue-50 border-blue-100', icon: 'fa-check-circle' };
+    if (val >= 6.0) return { label: 'GOOD', color: 'text-indigo-600 bg-indigo-50 border-indigo-100', icon: 'fa-thumbs-up' };
+    return { label: 'PASSING', color: 'text-slate-600 bg-slate-50 border-slate-100', icon: 'fa-user-graduate' };
+  };
+
+  const standing = getAcademicStanding(cgpaValue);
 
   return (
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
@@ -56,14 +68,14 @@ const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate, profile, resu
         </div>
 
         <div className="w-full md:w-80 bg-white rounded-[2rem] border border-slate-200 p-8 shadow-sm flex flex-col justify-center items-center text-center">
-          <div className="w-20 h-20 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-6 shadow-inner transform rotate-3">
+          <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mb-6 shadow-inner transform rotate-3">
             <i className="fas fa-chart-line text-3xl"></i>
           </div>
           <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Current CGPA</h3>
           <p className="text-5xl font-black text-slate-800 mb-4 tracking-tighter">{cgpa}</p>
-          <div className="flex items-center gap-2 text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-100">
-            <i className="fas fa-check-circle"></i>
-            STANDING: EXCELLENT
+          <div className={`flex items-center gap-2 text-[10px] font-black px-3 py-1.5 rounded-xl border ${standing.color}`}>
+            <i className={`fas ${standing.icon}`}></i>
+            STANDING: {standing.label}
           </div>
         </div>
       </div>

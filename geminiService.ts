@@ -2,7 +2,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { StudyNote } from "./types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Always initialize with the direct named parameter for apiKey.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getStudyNotes = async (courseTitle: string, topic: string): Promise<StudyNote> => {
   const prompt = `Generate comprehensive study notes for an M.Sc. Chemistry student on the topic: "${topic}" within the course "${courseTitle}". 
@@ -44,6 +45,7 @@ export const getStudyNotes = async (courseTitle: string, topic: string): Promise
       }
     });
 
+    // Directly access the .text property on the GenerateContentResponse object.
     const text = response.text;
     if (!text) throw new Error("No response from AI");
     return JSON.parse(text);

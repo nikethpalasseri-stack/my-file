@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { SYLLABUS, USER_PROFILE, TIMETABLES, RESULTS } from './constants';
+import { SYLLABUS, USER_PROFILE, TIMETABLES, RESULTS, ACADEMIC_CALENDAR } from './constants';
 import { Course } from './types';
 import Sidebar from './components/Sidebar';
 import DashboardView from './components/DashboardView';
@@ -8,9 +8,10 @@ import ProfileView from './components/ProfileView';
 import TimetableView from './components/TimetableView';
 import ResultsView from './components/ResultsView';
 import SyllabusHub from './components/SyllabusHub';
+import CalendarView from './components/CalendarView';
 import LoginPage from './components/LoginPage';
 
-export type ViewMode = 'dashboard' | 'profile' | 'syllabus' | 'timetable' | 'results';
+export type ViewMode = 'dashboard' | 'profile' | 'syllabus' | 'timetable' | 'results' | 'calendar';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -60,6 +61,8 @@ const App: React.FC = () => {
         return <TimetableView timetables={TIMETABLES} syllabus={SYLLABUS} />;
       case 'results':
         return <ResultsView results={RESULTS} syllabus={SYLLABUS} />;
+      case 'calendar':
+        return <CalendarView calendar={ACADEMIC_CALENDAR} />;
       case 'syllabus':
         return (
           <SyllabusHub 

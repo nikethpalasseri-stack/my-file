@@ -34,6 +34,22 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, syllabus }) => {
     });
   };
 
+  // SVG Circle Constants for SGPA Graph
+  const radius = 60;
+  const strokeWidth = 10;
+  const circumference = 2 * Math.PI * radius;
+
+  // Realistic Standing for Gauge
+  const getGaugeStanding = (val: number) => {
+    if (val >= 9.0) return { label: 'DISTINCTION', color: 'text-emerald-600' };
+    if (val >= 8.0) return { label: 'EXCELLENT', color: 'text-green-600' };
+    if (val >= 7.0) return { label: 'VERY GOOD', color: 'text-blue-600' };
+    if (val >= 6.0) return { label: 'FIRST CLASS', color: 'text-indigo-600' };
+    return { label: 'SECOND CLASS', color: 'text-slate-600' };
+  };
+
+  const gaugeStanding = currentResult ? getGaugeStanding(currentResult.sgpa) : { label: '', color: '' };
+
   return (
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between">
@@ -72,7 +88,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, syllabus }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <div id="results-content" className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-              {/* PDF Header - Only visible during export logic if we styled it, but html2pdf takes what's there */}
               <div className="p-8 border-b border-slate-100 bg-slate-50/50">
                 <div className="flex justify-between items-start">
                   <div>
@@ -135,7 +150,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, syllabus }) => {
                 </tfoot>
               </table>
               <div className="p-4 bg-slate-50 text-[8px] text-slate-400 text-center uppercase tracking-widest font-bold">
-                Generated via Niketh's Personal Academic Portal • Amrita Vishwa Vidyapeetham
+                Generated via Personal Academic Portal • {USER_PROFILE.university}
               </div>
             </div>
           </div>
@@ -144,15 +159,37 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, syllabus }) => {
             <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative overflow-hidden">
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Semester SGPA</h3>
               <div className="relative inline-flex items-center justify-center mb-6">
-                 <svg className="w-40 h-40">
-                   <circle className="text-slate-100" strokeWidth="10" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80" />
-                   <circle className="text-red-600" strokeWidth="10" strokeDasharray={440} strokeDashoffset={440 - (440 * currentResult.sgpa) / 10} strokeLinecap="round" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80" />
+                 <svg 
+                  className="w-40 h-40 transform -rotate-90 overflow-visible" 
+                  viewBox="0 0 140 140"
+                >
+                   <circle 
+                    className="text-slate-100" 
+                    strokeWidth={strokeWidth} 
+                    stroke="currentColor" 
+                    fill="transparent" 
+                    r={radius} 
+                    cx="70" 
+                    cy="70" 
+                  />
+                   <circle 
+                    className={`${gaugeStanding.color} transition-all duration-1000 ease-out`} 
+                    strokeWidth={strokeWidth} 
+                    strokeDasharray={circumference} 
+                    strokeDashoffset={circumference - (circumference * currentResult.sgpa) / 10} 
+                    strokeLinecap="round" 
+                    stroke="currentColor" 
+                    fill="transparent" 
+                    r={radius} 
+                    cx="70" 
+                    cy="70" 
+                  />
                  </svg>
                  <span className="absolute text-4xl font-black text-slate-800 tracking-tighter">{currentResult.sgpa}</span>
               </div>
-              <p className="text-[10px] font-bold text-emerald-600 mb-2 tracking-widest uppercase">Academic Status: Good Standing</p>
+              <p className={`text-[10px] font-bold mb-2 tracking-widest uppercase ${gaugeStanding.color}`}>Standing: {gaugeStanding.label}</p>
               <div className="w-full h-1 bg-slate-100 rounded-full mt-8 relative">
-                 <div className="absolute inset-0 bg-red-600 rounded-full" style={{width: `${currentResult.sgpa * 10}%`}}></div>
+                 <div className={`absolute inset-0 rounded-full bg-blue-600`} style={{width: `${currentResult.sgpa * 10}%`}}></div>
               </div>
               <div className="mt-4 flex justify-between text-[10px] font-bold text-slate-400">
                 <span>0.00</span>
@@ -165,7 +202,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, syllabus }) => {
               <div className="relative z-10">
                 <h4 className="text-xs font-bold text-slate-500 uppercase mb-4">Official Verification</h4>
                 <p className="text-[11px] text-slate-400 leading-relaxed italic mb-6">
-                  "These results are calculated based on the official University grading schema. Download the PDF for submission to external entities."
+                  "These results are calculated based on the official grading schema of {USER_PROFILE.university}. Download the PDF for submission to external entities."
                 </p>
                 <button 
                   onClick={handleDownloadPDF}
